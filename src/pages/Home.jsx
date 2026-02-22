@@ -320,8 +320,8 @@ const Home = () => {
                   className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200 flex flex-col"
                 >
                   <Link to={`/product/${product._id}`} className="block relative overflow-hidden">
-                    {/* Image Container */}
-                    <div className="relative w-full max-w-[16rem] mx-auto bg-gradient-to-br from-gray-100 to-gray-200 h-32 sm:h-40 md:h-44 lg:h-48 max-h-48">
+                    {/* Image Container - match All Products styling */}
+                    <div className="relative w-full bg-gradient-to-br from-gray-100 to-gray-200 h-40 sm:h-48 md:h-52 lg:h-56">
                       {(product.images?.[0] || product.image) ? (
                         <img
                           src={product.images?.[0] || product.image}
@@ -457,9 +457,9 @@ const Home = () => {
 
       {/* Promo Banner - Dynamic from Database */}
       {banners.length > 0 && banners.map((banner) => (
-        <section key={banner._id} className="py-10 md:py-14 px-4">
+        <section key={banner._id} className="py-10 md:py-14 px-4 my-10 md:my-16">
           <div
-            className="max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden relative min-h-[220px] md:min-h-[280px]"
+            className="max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden relative min-h-[220px] md:min-h-[280px] p-4 sm:p-6 md:p-8"
             style={{ backgroundColor: banner.backgroundColor }}
           >
             <div className="absolute inset-0 opacity-70">
@@ -475,7 +475,7 @@ const Home = () => {
             {/* Dark overlay for better text readability - limited to bottom half for a lighter, more refined feel */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
 
-            <div className="relative z-10 max-w-6xl mx-auto px-8 py-10 md:px-16 md:py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
+            <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
               <div className="flex-1 space-y-3 md:space-y-4 text-left">
                 {banner.subtitle && (
                   <span
@@ -531,8 +531,8 @@ const Home = () => {
 
       {/* Default Promo Banner - Shows if no active banners */}
       {banners.length === 0 && (
-        <section className="py-20 px-4">
-          <div className="max-w-7xl mx-auto rounded-[3rem] overflow-hidden bg-gray-900 relative">
+        <section className="py-20 px-4 my-10 md:my-16">
+          <div className="max-w-7xl mx-auto rounded-[3rem] overflow-hidden bg-gray-900 relative p-4 sm:p-6 md:p-8">
             <div className="absolute inset-0 opacity-40">
               <img 
                 src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80" 
@@ -540,7 +540,7 @@ const Home = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="relative z-10 px-8 py-20 md:p-24 text-center">
+            <div className="relative z-10 px-4 sm:px-6 md:px-8 py-12 md:py-16 text-center">
               <h2 className="text-white text-4xl md:text-6xl font-black mb-8 leading-tight">
                 Summer Flash Sale <br /> Up to 60% Off
               </h2>

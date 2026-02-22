@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: sevalla-backend
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      # IMPORTANT: Set this in Render dashboard or attach a Render MongoDB
+      - key: MONGODB_URI
+        sync: false
+      # Frontend URL (update to your Render frontend URL or custom domain)
+      - key: CLIENT_URL
+        value: "https://sevalla.com"
