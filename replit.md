@@ -57,7 +57,14 @@ Full-stack e-commerce application built with React (Vite) on the frontend and No
 - Host: `0.0.0.0`, Port: `5000`, `allowedHosts: true` (required for Replit proxy)
 - API proxy: `/api` → `http://localhost:3001`
 
+## Deployment
+- **Target**: Autoscale
+- **Build**: `npm install && npm run build && cd backend && npm install` (installs deps + builds Vite frontend into `dist/`)
+- **Run**: `cd backend && NODE_ENV=production PORT=5000 node server.js` (backend serves both API and static frontend)
+- In production, the Express server serves the built Vite frontend from `dist/` and handles SPA routing with a `*` catch-all
+
 ## Notes
 - The backend is set to not crash on MongoDB connection failure (for debugging without DB)
 - Socket.IO is used for real-time inventory stats in the admin panel
 - The frontend uses Vite's proxy for API calls in development
+- In production, the backend serves both API routes and the built frontend on a single port (5000)

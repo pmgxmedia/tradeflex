@@ -4,6 +4,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import http from 'http';
 import { Server } from 'socket.io';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -40,11 +42,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-app.get('/', (req, res) => {
-  res.json({ message: 'EStore API is running...' });
-});
-
 // Debug endpoint
 app.get('/api/debug', (req, res) => {
   res.json({ 
@@ -69,9 +66,23 @@ app.use('/api/analytics', analyticsRoutes);
 import deliveryRoutes from './routes/deliveryRoutes.js';
 app.use('/api/delivery', deliveryRoutes);
 
-// Error Handling Middleware
-app.use(notFound);
-app.use(errorHandler);
+// Serve frontend in production
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.resolve(__dirname, '..', 'dist');
+  app.use(express.static(distPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.json({ message: 'EStore API is running...' });
+  });
+  app.use(notFound);
+  app.use(errorHandler);
+}
 
 const PORT = process.env.PORT || 5000;
 
