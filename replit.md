@@ -1,0 +1,63 @@
+# EStore - E-commerce Application
+
+## Overview
+Full-stack e-commerce application built with React (Vite) on the frontend and Node.js/Express on the backend, using MongoDB for the database.
+
+## Architecture
+- **Frontend**: React 19 + Vite, Tailwind CSS, running on port 5000
+- **Backend**: Node.js/Express API with Socket.IO for real-time updates, running on port 3001
+- **Database**: MongoDB (via Mongoose)
+- **Auth**: JWT-based authentication with bcryptjs
+
+## Project Structure
+```
+/
+├── src/                    # React frontend source
+│   ├── components/         # Reusable UI components
+│   ├── contexts/           # React context providers (Auth, Cart, Settings, Analytics)
+│   ├── pages/              # Route-level page components
+│   │   └── admin/          # Admin dashboard pages
+│   ├── services/           # API service layer (api.js)
+│   └── utils/              # Utility helpers
+├── backend/                # Node.js/Express backend
+│   ├── config/db.js        # MongoDB connection
+│   ├── controllers/        # Route controllers
+│   ├── middleware/         # Auth & error middleware
+│   ├── models/             # Mongoose data models
+│   ├── routes/             # Express route definitions
+│   ├── scripts/            # Utility scripts (seed, reset)
+│   ├── utils/              # Email, PDF, token utilities
+│   └── server.js           # Entry point
+└── public/                 # Static assets
+```
+
+## Key Features
+- Product catalog with categories, search, and filtering
+- User authentication and profiles
+- Shopping cart and checkout
+- Order management
+- Admin dashboard with analytics, inventory management, banners
+- Real-time inventory monitoring via Socket.IO
+- Delivery provider system
+- Hero banners and promotional banners
+
+## Workflows
+- **Start application**: `npm run dev` → frontend on port 5000 (webview)
+- **Backend API**: `cd backend && node server.js` → API on port 3001 (console)
+
+## Environment Variables
+- `MONGODB_URI` (secret) — MongoDB connection string
+- `PORT` — Backend port (set to 3001)
+- `NODE_ENV` — Environment (development)
+- `JWT_SECRET` — JWT signing secret
+- `JWT_EXPIRE` — JWT expiration (30d)
+- `FRONTEND_URL` / `CLIENT_URL` — Frontend URL for CORS
+
+## Vite Configuration
+- Host: `0.0.0.0`, Port: `5000`, `allowedHosts: true` (required for Replit proxy)
+- API proxy: `/api` → `http://localhost:3001`
+
+## Notes
+- The backend is set to not crash on MongoDB connection failure (for debugging without DB)
+- Socket.IO is used for real-time inventory stats in the admin panel
+- The frontend uses Vite's proxy for API calls in development

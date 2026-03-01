@@ -56,9 +56,18 @@ waitForPort = 3001
 outputType = "console"
 
 [[ports]]
+localPort = 3001
+externalPort = 3001
+
+[[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 3001
-externalPort = 3001
+localPort = 5001
+externalPort = 3000
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "node backend/server.js & npm run preview -- --host 0.0.0.0 --port 5000"]
+build = ["bash", "-c", "npm install && cd backend && npm install && cd .."]
