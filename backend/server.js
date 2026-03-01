@@ -25,8 +25,11 @@ dotenv.config();
 const app = express();
 
 // Middleware
+const corsOrigin = process.env.NODE_ENV === 'production'
+  ? true
+  : (process.env.CLIENT_URL || 'http://localhost:5173');
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: corsOrigin,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
