@@ -258,21 +258,22 @@ const Home = () => {
 
       {/* Shop by Category */}
       {categories.length > 0 && (
-        <section className="py-10 sm:py-14 md:py-16 bg-gradient-to-br from-gray-50 to-white">
+        <section className="pt-12 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
-              <h2 className="home-hero-heading text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 md:mb-0">Shop by Category</h2>
-              <Link to="/products" className="text-blue-600 font-semibold flex items-center justify-center md:justify-start hover:underline transition-colors">
-                View All Categories <FiArrowRight className="ml-2" />
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8">
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">Shop by Category</h2>
+                <p className="text-sm text-gray-500 mt-1">Browse our curated collections</p>
+              </div>
+              <Link to="/products" className="text-sm text-gray-500 font-medium flex items-center hover:text-gray-900 transition-colors mt-3 md:mt-0">
+                View all <FiArrowRight className="ml-1.5 w-3.5 h-3.5" />
               </Link>
             </div>
             
-            {/* Horizontal scrollable slider for categories - mobile optimized */}
             <div className="relative">
               <div className="overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth">
                 <div className="flex gap-3 pb-2 min-w-max sm:min-w-0 sm:flex-wrap">
                   {categories.slice(0, 6).map((category, index) => {
-                    // Define gradient colors for each category
                     const gradients = [
                       'from-blue-500 to-indigo-600',
                       'from-purple-500 to-pink-600',
@@ -289,10 +290,8 @@ const Home = () => {
                         to={`/products?category=${category._id}`}
                         className="group relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex-shrink-0"
                       >
-                        {/* Background gradient */}
                         <div className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-90 group-hover:opacity-100 transition-opacity duration-300`}></div>
                         
-                        {/* Content */}
                         <div className="relative px-4 py-2.5 flex items-center gap-2">
                           <FiShoppingCart className="w-4 h-4 text-white group-hover:scale-110 transition-transform duration-300" />
                           <span className="text-sm font-semibold text-white whitespace-nowrap">
@@ -301,7 +300,6 @@ const Home = () => {
                           <FiArrowRight className="w-3.5 h-3.5 text-white/80 group-hover:translate-x-0.5 transition-transform duration-300" />
                         </div>
                         
-                        {/* Shine effect on hover */}
                         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                         </div>
@@ -316,14 +314,15 @@ const Home = () => {
       )}
 
       {/* Featured Products */}
-      <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
+      <section className="pt-10 pb-14 sm:pt-12 sm:pb-16 md:pt-14 md:pb-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between mb-8 sm:mb-10">
-            <h2 className="home-hero-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">Weekly Trending</h2>
-            <Link to="/products">
-              <Button variant="outline" className="rounded-full">
-                View All <FiArrowRight className="ml-2" />
-              </Button>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10">
+            <div>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Weekly Trending</h2>
+              <p className="text-sm text-gray-500 mt-1">Top picks this week</p>
+            </div>
+            <Link to="/products" className="text-sm text-gray-500 font-medium flex items-center hover:text-gray-900 transition-colors mt-3 md:mt-0">
+              View all <FiArrowRight className="ml-1.5 w-3.5 h-3.5" />
             </Link>
           </div>
           
