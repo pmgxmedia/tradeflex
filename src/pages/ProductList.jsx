@@ -150,7 +150,14 @@ const ProductList = () => {
     const savedLikes = localStorage.getItem('likedProducts');
     if (savedLikes) {
       try {
-        setLikedProducts(new Set(JSON.parse(savedLikes)));
+        const parsed = JSON.parse(savedLikes);
+        const likesObj = {};
+        if (Array.isArray(parsed)) {
+          parsed.forEach(id => { likesObj[id] = true; });
+        } else if (typeof parsed === 'object' && parsed !== null) {
+          Object.assign(likesObj, parsed);
+        }
+        setLikedProducts(likesObj);
       } catch (err) {
         console.error('Failed to parse liked products:', err);
       }
@@ -756,14 +763,14 @@ const ProductList = () => {
                     <button 
                       onClick={(e) => handleToggleLike(modalProduct._id, e)}
                       className={`w-12 h-12 border-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                        likedProducts.has(modalProduct._id)
+                        likedProducts[modalProduct._id]
                           ? 'border-red-500 text-red-500 bg-red-50 shadow-md'
                           : 'border-gray-400 text-gray-600 hover:border-red-500 hover:text-red-500 hover:bg-red-50 hover:shadow-md'
                       }`}
-                      title={likedProducts.has(modalProduct._id) ? 'Unlike' : 'Add to wishlist'}
+                      title={likedProducts[modalProduct._id] ? 'Unlike' : 'Add to wishlist'}
                     >
                       <FiHeart className={`w-7 h-7 ${
-                        likedProducts.has(modalProduct._id) ? 'fill-current' : ''
+                        likedProducts[modalProduct._id] ? 'fill-current' : ''
                       }`} />
                     </button>
                   </div>
