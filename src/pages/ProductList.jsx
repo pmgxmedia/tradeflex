@@ -573,129 +573,115 @@ const ProductList = () => {
           size="lg"
           title=""
         >
-          <div className="max-h-[80vh] overflow-y-auto">
+          <div className="max-h-[80vh] overflow-y-auto -mx-2 px-2">
             {modalLoading ? (
               <div className="flex justify-center py-20">
                 <Spinner size="lg" />
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Minimal Image View */}
-                <div className="flex flex-col">
-                  <div className="relative flex-1 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="flex flex-col gap-3">
+                  <div className="relative aspect-square bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center border border-gray-100">
                     {(modalProduct.images?.[0] || modalProduct.image) ? (
                       <img
                         src={modalProduct.images?.[0] || modalProduct.image}
                         alt={modalProduct.name}
-                        className="max-h-full w-auto object-contain"
+                        className="w-full h-full object-contain p-4"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-gray-400 text-6xl font-bold">
+                        <span className="text-gray-300 text-7xl font-bold">
                           {modalProduct.name.charAt(0)}
                         </span>
                       </div>
                     )}
                     {modalProduct.discount > 0 && (
-                      <div className="absolute top-3 right-3 bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-2 rounded-full text-sm font-bold shadow-lg">
-                        -{modalProduct.discount}%
+                      <div className="absolute top-3 left-3 bg-rose-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide">
+                        {modalProduct.discount}% OFF
                       </div>
                     )}
                   </div>
-                  {/* Small thumbnail strip if multiple images */}
                   {modalProduct.images && modalProduct.images.length > 1 && (
-                    <div className="flex flex-nowrap gap-2 mt-3 overflow-x-auto">
-                      {modalProduct.images.slice(0, 4).map((img, idx) => (
+                    <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1">
+                      {modalProduct.images.slice(0, 5).map((img, idx) => (
                         <img
                           key={idx}
                           src={img}
                           alt={`${modalProduct.name} ${idx + 1}`}
-                          className="w-16 h-16 object-cover rounded border-2 border-gray-200 flex-shrink-0"
+                          className="w-14 h-14 object-cover rounded-lg border border-gray-200 flex-shrink-0 hover:border-gray-400 transition-colors cursor-pointer"
                         />
                       ))}
                     </div>
                   )}
                 </div>
 
-                {/* Product Details */}
                 <div className="flex flex-col">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">{modalProduct.name}</h2>
+                  {modalProduct.brand && (
+                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">
+                      {modalProduct.brand}
+                    </span>
+                  )}
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight">{modalProduct.name}</h2>
                   
-                  {/* Rating */}
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center gap-3 mb-4">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <FiStar
                           key={i}
                           className={`w-4 h-4 ${
                             i < Math.floor(modalProduct.rating)
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
+                              ? 'fill-amber-400 text-amber-400'
+                              : 'text-gray-200'
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="ml-2 text-sm text-gray-600">
-                      {modalProduct.rating.toFixed(1)} ({modalProduct.numReviews} reviews)
+                    <span className="text-sm text-gray-500">
+                      {modalProduct.rating.toFixed(1)} ({modalProduct.numReviews})
                     </span>
                   </div>
 
-                  {/* Price */}
-                  <div className="mb-4">
-                    {modalProduct.discount > 0 ? (
-                      <div className="flex items-baseline gap-3">
-                        <span className="text-3xl font-bold text-gray-900 tracking-tight">
-                          R{formatPrice(modalProduct.price * (1 - modalProduct.discount / 100))}
-                        </span>
-                        <span className="text-lg text-gray-400 line-through">
-                          R{formatPrice(modalProduct.price)}
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-3xl font-bold text-gray-900 tracking-tight">
+                  <div className="flex items-baseline gap-3 mb-5">
+                    <span className="text-3xl font-extrabold text-gray-900 tracking-tight">
+                      R{formatPrice(modalProduct.discount > 0 ? modalProduct.price * (1 - modalProduct.discount / 100) : modalProduct.price)}
+                    </span>
+                    {modalProduct.discount > 0 && (
+                      <span className="text-base text-gray-400 line-through">
                         R{formatPrice(modalProduct.price)}
                       </span>
                     )}
                   </div>
 
-                  {/* Stock Status */}
-                  <div className="mb-4">
+                  <div className="mb-5">
                     {modalProduct.stock > 0 ? (
-                      <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                      <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-semibold">
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
                         In Stock ({modalProduct.stock} available)
                       </span>
                     ) : (
-                      <span className="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                      <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                         Out of Stock
                       </span>
                     )}
                   </div>
 
-                  {/* Description */}
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-                    <p className="text-gray-600 text-sm line-clamp-4">{modalProduct.description}</p>
-                  </div>
-
-                  {/* Brand */}
-                  {modalProduct.brand && (
-                    <div className="mb-6">
-                      <span className="text-gray-600 text-sm">Brand: </span>
-                      <span className="font-semibold text-sm">{modalProduct.brand}</span>
+                  {modalProduct.description && (
+                    <div className="mb-5 pb-5 border-b border-gray-100">
+                      <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">{modalProduct.description}</p>
                     </div>
                   )}
 
-                  {/* Contact Information */}
                   {(modalProduct.contactNumber || modalProduct.whatsappNumber) && (
-                    <div className="mb-6">
-                      <h3 className="font-semibold text-gray-900 mb-2 text-sm">Contact Store</h3>
-                      <div className="space-y-2">
+                    <div className="mb-5 pb-5 border-b border-gray-100">
+                      <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Contact</h4>
+                      <div className="flex flex-wrap gap-2">
                         {modalProduct.contactNumber && (
                           <a
                             href={`tel:${modalProduct.contactNumber}`}
-                            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors text-sm"
+                            className="inline-flex items-center gap-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-lg transition-colors"
                           >
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
                             {modalProduct.contactNumber}
@@ -706,92 +692,86 @@ const ProductList = () => {
                             href={`https://wa.me/${modalProduct.whatsappNumber.replace(/[^0-9]/g, '')}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center text-green-600 hover:text-green-800 transition-colors text-sm"
+                            className="inline-flex items-center gap-2 text-sm text-gray-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-lg transition-colors"
                           >
-                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
                               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                             </svg>
-                            WhatsApp: {modalProduct.whatsappNumber}
+                            WhatsApp
                           </a>
                         )}
                       </div>
                     </div>
                   )}
 
-                  {/* Quantity Selector */}
                   {modalProduct.stock > 0 && (
                     <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                         Quantity
                       </label>
-                      <div className="flex items-center space-x-3">
+                      <div className="inline-flex items-center border border-gray-200 rounded-xl overflow-hidden">
                         <button
                           onClick={() => setModalQuantity(Math.max(1, modalQuantity - 1))}
-                          className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-colors transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                          style={{ background: '#2563eb', color: '#fff' }}
+                          className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
                         >
-                          <span className="text-xl font-bold" style={{ color: '#fff' }}>-</span>
+                          <FiMinus className="w-4 h-4" />
                         </button>
                         <input
                           type="number"
                           value={modalQuantity}
                           onChange={(e) => setModalQuantity(Math.max(1, Math.min(modalProduct.stock, parseInt(e.target.value) || 1)))}
-                          className="w-20 text-center border-2 border-blue-600 rounded-lg py-2 text-base font-bold text-blue-700 bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-600"
+                          className="w-14 text-center border-x border-gray-200 py-2 text-sm font-semibold text-gray-900 focus:outline-none bg-transparent"
                         />
                         <button
                           onClick={() => setModalQuantity(Math.min(modalProduct.stock, modalQuantity + 1))}
-                          className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-colors transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                          style={{ background: '#2563eb', color: '#fff' }}
+                          className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
                         >
-                          <span className="text-xl font-bold" style={{ color: '#fff' }}>+</span>
+                          <FiPlus className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
                   )}
 
-                  {/* Action Buttons */}
                   <div className="flex gap-3 mt-auto">
                     <button
                       onClick={handleModalAddToCart}
                       disabled={modalProduct.stock === 0}
-                      className="flex-1 px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:shadow-none flex items-center justify-center gap-2 text-base shadow-md"
-                      style={{ background: modalProduct.stock === 0 ? undefined : '#2563eb', color: '#fff' }}
+                      className="flex-1 py-3 px-6 rounded-xl font-semibold text-white bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 text-sm"
                     >
-                      <FiShoppingCart className="w-5 h-5 stroke-2" />
-                      <span>Add to Cart</span>
+                      <FiShoppingCart className="w-4 h-4" />
+                      Add to Cart
                     </button>
                     <button 
                       onClick={(e) => handleToggleLike(modalProduct._id, e)}
-                      className={`w-12 h-12 border-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200 ${
                         likedProducts[modalProduct._id]
-                          ? 'border-red-500 text-red-500 bg-red-50 shadow-md'
-                          : 'border-gray-400 text-gray-600 hover:border-red-500 hover:text-red-500 hover:bg-red-50 hover:shadow-md'
+                          ? 'bg-red-50 text-red-500 border border-red-200'
+                          : 'bg-gray-50 text-gray-400 border border-gray-200 hover:text-red-500 hover:bg-red-50 hover:border-red-200'
                       }`}
                       title={likedProducts[modalProduct._id] ? 'Unlike' : 'Add to wishlist'}
                     >
-                      <FiHeart className={`w-7 h-7 ${
+                      <FiHeart className={`w-5 h-5 ${
                         likedProducts[modalProduct._id] ? 'fill-current' : ''
                       }`} />
                     </button>
                   </div>
 
-                  {/* View Full Details Link */}
-                  <Link 
-                    to={`/product/${modalProduct._id}`}
-                    className="text-center text-sm text-blue-600 hover:text-blue-700 mt-4 block"
-                    onClick={handleCloseModal}
-                  >
-                    View full details and reviews →
-                  </Link>
-
-                  {/* Back/Return Button */}
-                  <button
-                    onClick={handleCloseModal}
-                    className="w-full mt-3 inline-flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 transition-colors py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                  >
-                    <FiArrowLeft className="w-4 h-4" />
-                    <span className="font-medium text-sm">Back to Products</span>
-                  </button>
+                  <div className="flex items-center gap-4 mt-5 pt-5 border-t border-gray-100">
+                    <Link 
+                      to={`/product/${modalProduct._id}`}
+                      className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500"
+                      onClick={handleCloseModal}
+                    >
+                      View full details
+                    </Link>
+                    <span className="text-gray-200">|</span>
+                    <button
+                      onClick={handleCloseModal}
+                      className="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
