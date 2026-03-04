@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Alert from '../components/ui/Alert';
+import SEO from '../components/SEO';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex">
+      <SEO title="Sign In" description="Sign in to your account to access orders, wishlist, and exclusive deals." canonicalPath="/login" />
       {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-20 xl:px-24 bg-white">
         <div className="w-full max-w-md space-y-8">

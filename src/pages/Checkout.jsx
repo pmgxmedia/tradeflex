@@ -8,6 +8,7 @@ import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Alert from '../components/ui/Alert';
+import SEO from '../components/SEO';
 import { FiCreditCard, FiLock } from 'react-icons/fi';
 
 const Checkout = () => {
@@ -168,6 +169,7 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO title="Checkout" description="Complete your purchase securely." canonicalPath="/checkout" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 

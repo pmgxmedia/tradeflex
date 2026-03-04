@@ -4,6 +4,7 @@ import { getProducts, getCategories, getActiveBanners, getActiveHeroBanner, togg
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Spinner from '../components/ui/Spinner';
+import SEO from '../components/SEO';
 import { FiArrowRight, FiStar, FiTruck, FiCreditCard, FiShield, FiEye, FiHeart, FiShoppingCart } from 'react-icons/fi';
 import { getDeviceId, hasLikedProduct, toggleProductLikeLocal } from '../utils/deviceId';
 
@@ -96,6 +97,21 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        canonicalPath="/"
+        keywords="ecommerce, online shopping, products, deals, shop, South Africa"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "EStore",
+          "url": window.location.origin,
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": `${window.location.origin}/products?search={search_term_string}`,
+            "query-input": "required name=search_term_string"
+          }
+        }}
+      />
       {/* Hero Section - Dynamic from Database */}
       {heroBanner ? (
         <section

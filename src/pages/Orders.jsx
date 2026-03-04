@@ -5,6 +5,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Spinner from '../components/ui/Spinner';
 import Alert from '../components/ui/Alert';
+import SEO from '../components/SEO';
 import { FiPackage, FiTruck, FiCheckCircle, FiXCircle, FiArrowLeft } from 'react-icons/fi';
 
 const Orders = () => {
@@ -81,6 +82,7 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO title="My Orders" description="View and track your order history." canonicalPath="/orders" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <Button onClick={() => navigate('/')} variant="outline" className="mb-4">

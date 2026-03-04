@@ -63,8 +63,17 @@ Full-stack e-commerce application built with React (Vite) on the frontend and No
 - **Run**: `cd backend && NODE_ENV=production PORT=5000 node server.js` (backend serves both API and static frontend)
 - In production, the Express server serves the built Vite frontend from `dist/` and handles SPA routing with a `*` catch-all
 
+## SEO
+- `src/components/SEO.jsx` — Reusable component that dynamically sets document title, meta tags (description, keywords, og, twitter), canonical URLs, and JSON-LD structured data
+- Uses `useSettings()` context to pull dynamic site name for page titles
+- Integrated into all customer-facing pages: Home, ProductList, ProductDetail, Login, Register, Cart, Checkout, Orders, OrderDetail, Profile
+- `index.html` includes base meta tags (robots, theme-color, og:image, canonical, twitter card) as fallbacks
+- ProductDetail page includes Product schema.org structured data with pricing, availability, and ratings
+- Home page includes WebSite schema.org structured data with SearchAction
+
 ## Notes
 - The backend is set to not crash on MongoDB connection failure (for debugging without DB)
 - Socket.IO is used for real-time inventory stats in the admin panel
 - The frontend uses Vite's proxy for API calls in development
 - In production, the backend serves both API routes and the built frontend on a single port (5000)
+- Mobile search bar in Navbar only shows when mobile menu is open (not always visible)

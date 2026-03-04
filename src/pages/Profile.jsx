@@ -6,6 +6,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Alert from '../components/ui/Alert';
 import Spinner from '../components/ui/Spinner';
+import SEO from '../components/SEO';
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
@@ -122,6 +123,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO title="My Profile" description="Manage your account settings, address, and password." canonicalPath="/profile" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">My Profile</h1>
 

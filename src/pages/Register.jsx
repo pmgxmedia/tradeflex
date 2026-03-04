@@ -5,6 +5,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Alert from '../components/ui/Alert';
+import SEO from '../components/SEO';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <SEO title="Create Account" description="Create your account to start shopping. Enjoy exclusive deals, fast delivery, and secure checkout." canonicalPath="/register" />
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">

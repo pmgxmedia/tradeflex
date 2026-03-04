@@ -8,6 +8,7 @@ import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Spinner from '../components/ui/Spinner';
 import Alert from '../components/ui/Alert';
+import SEO from '../components/SEO';
 import { FiStar, FiShoppingCart, FiHeart, FiEye, FiArrowLeft } from 'react-icons/fi';
 import { getDeviceId, hasViewedProduct, markProductAsViewed, hasLikedProduct, toggleProductLikeLocal } from '../utils/deviceId';
 
@@ -133,6 +134,34 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO
+        title={product.name}
+        description={product.description?.substring(0, 160) || `Buy ${product.name} at great prices.`}
+        keywords={`${product.name}, ${product.category?.name || ''}, buy online, South Africa`}
+        canonicalPath={`/product/${product._id}`}
+        ogType="product"
+        ogImage={product.images?.[0]}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": product.name,
+          "description": product.description,
+          "image": product.images?.[0],
+          "offers": {
+            "@type": "Offer",
+            "price": finalPrice,
+            "priceCurrency": "ZAR",
+            "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+          },
+          ...(product.rating > 0 && {
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": product.rating,
+              "reviewCount": product.numReviews || 1
+            }
+          })
+        }}
+      />
       {/* Back Button full-width row */}
       <div className="px-4 sm:px-6 lg:px-8 mb-4">
         <button

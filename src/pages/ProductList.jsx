@@ -4,6 +4,7 @@ import { getProducts, getCategories, getProductById, toggleProductLike } from '.
 import Card from '../components/ui/Card';
 import Spinner from '../components/ui/Spinner';
 import Modal from '../components/ui/Modal';
+import SEO from '../components/SEO';
 import { FiStar, FiFilter, FiEye, FiHeart, FiShoppingCart, FiX, FiMinus, FiPlus, FiArrowLeft } from 'react-icons/fi';
 import { useCart } from '../contexts/CartContext';
 import { getDeviceId, hasLikedProduct, toggleProductLikeLocal } from '../utils/deviceId';
@@ -224,6 +225,12 @@ const ProductList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title={filters.search ? `Search: ${filters.search}` : (filters.category ? `${filters.category} Products` : 'All Products')}
+        description="Browse our wide range of quality products. Filter by category, price, and more."
+        keywords="products, shop online, catalog, deals, South Africa"
+        canonicalPath="/products"
+      />
       {/* Notification Toast */}
       {notification && (
         <div className="fixed top-20 right-4 z-50 animate-slide-in-right">

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 import { FiMinus, FiPlus, FiTrash2, FiShoppingBag } from 'react-icons/fi';
 
 const Cart = () => {
@@ -33,6 +34,7 @@ const Cart = () => {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <SEO title="Shopping Cart" description="Your shopping cart is empty. Browse our products to find great deals." canonicalPath="/cart" />
         <div className="text-center">
           <FiShoppingBag className="w-24 h-24 mx-auto text-gray-300 mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
@@ -47,6 +49,7 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO title="Shopping Cart" description="Review your cart items and proceed to checkout." canonicalPath="/cart" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="admin-page-title font-bold text-gray-900 my-6">Shopping Cart</h1>
 

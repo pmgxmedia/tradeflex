@@ -5,6 +5,7 @@ import Card from '../components/ui/Card';
 import Spinner from '../components/ui/Spinner';
 import Alert from '../components/ui/Alert';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 import { 
   FiPackage, 
   FiTruck, 
@@ -158,6 +159,7 @@ const OrderDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO title={`Order #${order._id.slice(-8)}`} description="View your order details and tracking information." />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-6">
