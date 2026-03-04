@@ -123,8 +123,8 @@ const Home = () => {
             <div className="absolute -bottom-40 -left-10 w-72 h-72 bg-purple-100 rounded-full blur-3xl opacity-30" />
           </div>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-28">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16 md:py-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
               {/* Image / Visual */}
               <div className="order-1 md:order-2 flex justify-center md:justify-end">
                 <div className="relative z-0 group w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
@@ -203,8 +203,8 @@ const Home = () => {
             <div className="absolute -bottom-40 -left-10 w-72 h-72 bg-purple-100 rounded-full blur-3xl opacity-30" />
           </div>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-28">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16 md:py-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
               {/* Image / Visual */}
               <div className="order-1 md:order-2 flex justify-center md:justify-end">
                 <div className="relative z-0 group w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
@@ -258,17 +258,18 @@ const Home = () => {
 
       {/* Shop by Category */}
       {categories.length > 0 && (
-        <section className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 mb-16 sm:mb-20 md:mb-24 lg:mb-32 py-20 bg-gradient-to-br from-gray-50 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-12">
+        <section className="py-10 sm:py-14 md:py-16 bg-gradient-to-br from-gray-50 to-white">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+              <h2 className="home-hero-heading text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 md:mb-0">Shop by Category</h2>
               <Link to="/products" className="text-blue-600 font-semibold flex items-center justify-center md:justify-start hover:underline transition-colors">
                 View All Categories <FiArrowRight className="ml-2" />
               </Link>
             </div>
             
             {/* Horizontal scrollable slider for categories - mobile optimized */}
-            <div className="relative -mx-4 sm:mx-0">
-              <div className="overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth px-4 sm:px-0">
+            <div className="relative">
+              <div className="overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth">
                 <div className="flex gap-3 pb-2 min-w-max sm:min-w-0 sm:flex-wrap">
                   {categories.slice(0, 6).map((category, index) => {
                     // Define gradient colors for each category
@@ -315,10 +316,10 @@ const Home = () => {
       )}
 
       {/* Featured Products */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="home-hero-heading text-4xl font-extrabold text-gray-900">Weekly Trending</h2>
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between mb-8 sm:mb-10">
+            <h2 className="home-hero-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">Weekly Trending</h2>
             <Link to="/products">
               <Button variant="outline" className="rounded-full">
                 View All <FiArrowRight className="ml-2" />
@@ -326,14 +327,14 @@ const Home = () => {
             </Link>
           </div>
           
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(10.5rem,1fr))] gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
             {featuredProducts.length > 0 ? featuredProducts.map((product) => {
               const isLiked = likedProducts[product._id] || false;
               
               return (
                 <div 
                   key={product._id} 
-                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200 flex flex-col"
+                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200 flex flex-col"
                 >
                   <Link to={`/product/${product._id}`} className="block relative overflow-hidden">
                     {/* Image Container - match All Products styling */}
@@ -392,7 +393,7 @@ const Home = () => {
                   </Link>
 
                   {/* Product Info */}
-                  <div className="p-4 flex-1 flex flex-col">
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col">
                     <Link to={`/product/${product._id}`}>
                       <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200 text-sm leading-tight">
                         {product.name}
@@ -460,8 +461,8 @@ const Home = () => {
               );
             }) : (
               [...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white rounded-3xl p-4 shadow-sm animate-pulse">
-                  <div className="h-40 sm:h-52 md:h-60 lg:h-72 bg-gray-200 rounded-2xl mb-4"></div>
+                <div key={i} className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm animate-pulse">
+                  <div className="h-40 sm:h-48 md:h-52 lg:h-56 bg-gray-200 rounded-xl mb-4"></div>
                   <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
                   <div className="h-6 bg-gray-200 rounded w-3/4"></div>
                 </div>
@@ -473,9 +474,9 @@ const Home = () => {
 
       {/* Promo Banner - Dynamic from Database */}
       {banners.length > 0 && banners.map((banner) => (
-        <section key={banner._id} className="py-10 md:py-14 px-4 my-10 md:my-16">
+        <section key={banner._id} className="py-8 sm:py-10 md:py-14 px-6 sm:px-8 lg:px-12">
           <div
-            className="max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden relative min-h-[220px] md:min-h-[280px] p-4 sm:p-6 md:p-8"
+            className="max-w-7xl mx-auto rounded-3xl overflow-hidden relative min-h-[220px] md:min-h-[280px] p-6 sm:p-8 md:p-10"
             style={{ backgroundColor: banner.backgroundColor }}
           >
             <div className="absolute inset-0 opacity-70">
@@ -491,7 +492,7 @@ const Home = () => {
             {/* Dark overlay for better text readability - limited to bottom half for a lighter, more refined feel */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
 
-            <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
+            <div className="relative z-10 max-w-6xl mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-10">
               <div className="flex-1 space-y-3 md:space-y-4 text-left">
                 {banner.subtitle && (
                   <span
@@ -528,7 +529,7 @@ const Home = () => {
               </div>
 
               <div className="hidden md:flex flex-none">
-                <div className="rounded-3xl bg-white/90 backdrop-blur shadow-2xl shadow-black/30 px-8 py-6 min-w-[220px] max-w-xs flex flex-col gap-3 m-2">
+                <div className="rounded-2xl bg-white/90 backdrop-blur shadow-2xl shadow-black/30 px-6 py-5 min-w-[200px] max-w-xs flex flex-col gap-3">
                   <p className="text-xs font-semibold tracking-[0.18em] text-gray-500 uppercase">Featured Pick</p>
                   <p className="text-base font-semibold text-gray-900 break-words leading-relaxed">{banner.title}</p>
                   {banner.description && (
@@ -547,8 +548,8 @@ const Home = () => {
 
       {/* Default Promo Banner - Shows if no active banners */}
       {banners.length === 0 && (
-        <section className="py-20 px-4 my-10 md:my-16">
-          <div className="max-w-7xl mx-auto rounded-[3rem] overflow-hidden bg-gray-900 relative p-4 sm:p-6 md:p-8">
+        <section className="py-12 sm:py-16 md:py-20 px-6 sm:px-8 lg:px-12">
+          <div className="max-w-7xl mx-auto rounded-3xl overflow-hidden bg-gray-900 relative">
             <div className="absolute inset-0 opacity-40">
               <img 
                 src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80" 
@@ -556,11 +557,11 @@ const Home = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="relative z-10 px-4 sm:px-6 md:px-8 py-12 md:py-16 text-center">
-              <h2 className="text-white text-4xl md:text-6xl font-black mb-8 leading-tight">
+            <div className="relative z-10 px-8 sm:px-10 md:px-12 py-14 md:py-20 text-center">
+              <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 sm:mb-8 leading-tight">
                 Summer Flash Sale <br /> Up to 60% Off
               </h2>
-              <p className="text-gray-300 text-xl mb-10 max-w-2xl mx-auto">
+              <p className="text-gray-300 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto">
                 Our biggest sale of the season is here. Discover premium quality at unbeatable prices for a limited time only.
               </p>
               <Link to="/products?discount=true">

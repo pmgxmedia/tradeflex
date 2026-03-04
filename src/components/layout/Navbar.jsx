@@ -44,8 +44,8 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Nav Links - Center (Optional, but looks good) */}
-          <div className="hidden lg:flex items-center space-x-8">
+          {/* Nav Links - Center */}
+          <div className="hidden lg:flex items-center space-x-10">
             <Link to="/products" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors uppercase tracking-widest">
               Catalog
             </Link>

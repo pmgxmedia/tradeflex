@@ -71,9 +71,18 @@ Full-stack e-commerce application built with React (Vite) on the frontend and No
 - ProductDetail page includes Product schema.org structured data with pricing, availability, and ratings
 - Home page includes WebSite schema.org structured data with SearchAction
 
+## UI/Layout
+- Consistent horizontal padding across sections: `px-6 sm:px-8 lg:px-12`
+- Footer has top margin (`mt-8 sm:mt-12`), consistent padding, and wider grid gaps on large screens
+- Navbar center links use `space-x-10` for breathing room between Catalog, New Arrivals, Flash Sale
+- Home page sections use standardized vertical padding (`py-12 sm:py-16 md:py-20`)
+- Product grid: `grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`
+
 ## Notes
 - The backend is set to not crash on MongoDB connection failure (for debugging without DB)
 - Socket.IO is used for real-time inventory stats in the admin panel
 - The frontend uses Vite's proxy for API calls in development
 - In production, the backend serves both API routes and the built frontend on a single port (5000)
 - Mobile search bar in Navbar only shows when mobile menu is open (not always visible)
+- Products API is slow (~2s) due to base64 images stored directly in MongoDB - consider using external image storage for better performance
+- Analytics endpoints (pageview, session) return 404/500 when sessions aren't found - non-blocking but generates console warnings
