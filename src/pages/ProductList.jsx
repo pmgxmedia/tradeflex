@@ -362,7 +362,7 @@ const ProductList = () => {
               </div>
             ) : filteredProducts.length > 0 ? (
               <>
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(10.5rem,1fr))] gap-5 mb-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 mb-8">
                   {filteredProducts.map((product) => {
                     const isLiked = likedProducts[product._id] || false;
                     
