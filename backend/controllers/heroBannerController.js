@@ -58,7 +58,8 @@ export const getHeroBannerById = async (req, res) => {
 // @access  Private/Admin
 export const createHeroBanner = async (req, res) => {
   try {
-    const heroBanner = await HeroBanner.create(req.body);
+    const { _id, ...data } = req.body;
+    const heroBanner = await HeroBanner.create(data);
     res.status(201).json(heroBanner);
   } catch (error) {
     res.status(400).json({ message: error.message });

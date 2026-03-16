@@ -104,6 +104,7 @@ export const getUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
+      const token = generateToken(user._id);
       res.json({
         _id: user._id,
         name: user.name,
@@ -112,6 +113,7 @@ export const getUserProfile = async (req, res) => {
         phone: user.phone,
         address: user.address,
         avatar: user.avatar,
+        token,
       });
     } else {
       res.status(404).json({ message: 'User not found' });

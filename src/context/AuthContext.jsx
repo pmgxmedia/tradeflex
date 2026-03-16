@@ -29,8 +29,10 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         const { data } = await api.get('/users/profile');
+        if (data.token) localStorage.setItem('token', data.token);
         setUser(data);
       } catch (error) {
+        localStorage.removeItem('token');
         setUser(null);
       } finally {
         setLoading(false);

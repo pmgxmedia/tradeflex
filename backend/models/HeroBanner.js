@@ -19,7 +19,6 @@ const heroBannerSchema = new mongoose.Schema(
     heading: {
       mainText: {
         type: String,
-        required: [true, 'Main heading text is required'],
         default: 'Redefine Your',
       },
       highlightedText: {
@@ -61,7 +60,6 @@ const heroBannerSchema = new mongoose.Schema(
     },
     heroImage: {
       type: String,
-      required: [true, 'Hero image is required'],
       default: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1000',
     },
     backgroundColor: {
