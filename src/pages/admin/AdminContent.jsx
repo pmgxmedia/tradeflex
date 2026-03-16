@@ -7,6 +7,32 @@ import Spinner from '../../components/ui/Spinner';
 import { FiFileText, FiImage, FiVideo, FiLink, FiTrash2, FiPlus, FiEdit2, FiSave, FiX } from 'react-icons/fi';
 import { getBanners, createBanner, updateBanner, deleteBanner, getHeroBanners, createHeroBanner, updateHeroBanner, deleteHeroBanner } from '../../services/api';
 
+const compressImage = (file, maxWidth = 1200, quality = 0.78) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 const AdminContent = () => {
   const [alert, setAlert] = useState({ show: false, message: '', type: '' });
   const [activeTab, setActiveTab] = useState('banners');
@@ -157,32 +183,23 @@ const AdminContent = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       showAlert('Please select an image file', 'error');
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      showAlert('Image size must be less than 5MB', 'error');
+    if (file.size > 10 * 1024 * 1024) {
+      showAlert('Image size must be less than 10MB', 'error');
       return;
     }
 
     try {
-      // Convert to base64
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        handleUpdateBanner(bannerId, 'image', base64String);
-        showAlert('Image uploaded successfully');
-      };
-      reader.onerror = () => {
-        showAlert('Failed to read image file', 'error');
-      };
-      reader.readAsDataURL(file);
+      showAlert('Compressing image...');
+      const compressed = await compressImage(file, 1200, 0.78);
+      handleUpdateBanner(bannerId, 'image', compressed);
+      showAlert('Image uploaded and compressed successfully');
     } catch (error) {
-      showAlert('Failed to upload image', 'error');
+      showAlert('Failed to process image', 'error');
     }
   };
 
@@ -292,24 +309,18 @@ const AdminContent = () => {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      showAlert('Image size must be less than 5MB', 'error');
+    if (file.size > 10 * 1024 * 1024) {
+      showAlert('Image size must be less than 10MB', 'error');
       return;
     }
 
     try {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        handleUpdateHeroBanner(heroBannerId, 'heroImage', base64String);
-        showAlert('Hero image uploaded successfully');
-      };
-      reader.onerror = () => {
-        showAlert('Failed to read image file', 'error');
-      };
-      reader.readAsDataURL(file);
+      showAlert('Compressing image...');
+      const compressed = await compressImage(file, 1400, 0.80);
+      handleUpdateHeroBanner(heroBannerId, 'heroImage', compressed);
+      showAlert('Hero image uploaded and compressed successfully');
     } catch (error) {
-      showAlert('Failed to upload hero image', 'error');
+      showAlert('Failed to process hero image', 'error');
     }
   };
 
@@ -744,7 +755,6 @@ const AdminContent = () => {
                     value={banner.link || '/products'}
                     onChange={(e) => handleUpdateBanner(banner._id, 'link', e.target.value)}
                     placeholder="/products"
-                    icon={FiLink}
                   />
 
                   <Input

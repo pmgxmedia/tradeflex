@@ -6,6 +6,8 @@ const Input = ({
   onChange,
   placeholder,
   error,
+  helperText,
+  icon: _icon,
   required = false,
   disabled = false,
   className = '',
@@ -36,6 +38,7 @@ const Input = ({
         `}
         {...props}
       />
+      {helperText && <p className="mt-1 text-xs text-gray-500">{helperText}</p>}
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );
