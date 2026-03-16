@@ -424,16 +424,16 @@ const Home = () => {
                     {/* Price */}
                     <div className="mb-3 mt-auto">
                       {product.discount > 0 ? (
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-xl font-bold text-gray-900 tracking-tight">
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-sm sm:text-base md:text-lg font-bold text-gray-900 tracking-tight">
                             R{formatPrice(product.price * (1 - product.discount / 100))}
                           </span>
-                          <span className="text-sm text-gray-400 line-through">
+                          <span className="text-xs sm:text-sm text-gray-400 line-through">
                             R{formatPrice(product.price)}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-xl font-bold text-gray-900 tracking-tight">
+                        <span className="text-sm sm:text-base md:text-lg font-bold text-gray-900 tracking-tight">
                           R{formatPrice(product.price)}
                         </span>
                       )}
