@@ -8,69 +8,78 @@ import io from 'socket.io-client';
 const AdminInventory = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // all, low, out
+  const [filter, setFilter] = useState('all');
   const [realtimeMetrics, setRealtimeMetrics] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(null);
   const socketRef = useRef(null);
 
-  useEffect(() => {
-    // Connect to WebSocket server for real-time updates
-    const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
-    socketRef.current = io(SOCKET_URL, {
-      withCredentials: true,
-      transports: ['websocket', 'polling']
-    });
-
-    socketRef.current.on('connect', () => {
-      console.log('✓ Connected to real-time inventory monitoring');
-      setIsConnected(true);
-    });
-
-    socketRef.current.on('inventoryStats', (data) => {
+  const fetchInventoryHttp = async () => {
+    try {
+      const data = await getProducts({ limit: 200 });
       setProducts(data.products || []);
-      setRealtimeMetrics(data.metrics);
-      setRecentActivity(data.recentActivity || []);
-      setLastUpdate(new Date(data.timestamp));
+    } catch (err) {
+      console.error('Failed to fetch inventory:', err);
+    } finally {
       setLoading(false);
-    });
-
-    socketRef.current.on('inventoryError', (error) => {
-      console.error('Inventory monitoring error:', error);
-    });
-
-    socketRef.current.on('disconnect', () => {
-      console.log('✗ Disconnected from real-time inventory monitoring');
-      setIsConnected(false);
-    });
-
-    // Cleanup on unmount
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  }, []);
-
-  const fetchInventory = async () => {
-    // Manual refresh via socket
-    if (socketRef.current && socketRef.current.connected) {
-      socketRef.current.emit('refreshInventory');
     }
   };
 
-  // Use real-time metrics if available, otherwise calculate from products
-  const lowStockProducts = realtimeMetrics?.lowStockProducts || 
-    products.filter(p => p.countInStock > 0 && p.countInStock < 10);
-  const outOfStockProducts = realtimeMetrics?.outOfStockProducts || 
-    products.filter(p => p.countInStock === 0);
-  const totalValue = realtimeMetrics?.totalValue || 
-    products.reduce((sum, p) => sum + (p.price * p.countInStock), 0);
+  useEffect(() => {
+    fetchInventoryHttp();
+
+    const socket = io(window.location.origin, {
+      withCredentials: true,
+      transports: ['websocket', 'polling'],
+      path: '/socket.io',
+    });
+    socketRef.current = socket;
+
+    socket.on('connect', () => {
+      setIsConnected(true);
+    });
+
+    socket.on('inventoryStats', (data) => {
+      if (data.products?.length) setProducts(data.products);
+      setRealtimeMetrics(data.metrics);
+      setRecentActivity(data.recentActivity || []);
+      setLastUpdate(new Date(data.timestamp));
+    });
+
+    socket.on('inventoryError', (error) => {
+      console.error('Inventory monitoring error:', error);
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const handleRefresh = async () => {
+    if (socketRef.current?.connected) {
+      socketRef.current.emit('refreshInventory');
+    } else {
+      setLoading(true);
+      await fetchInventoryHttp();
+    }
+  };
+
+  const lowStockProducts = realtimeMetrics?.lowStockProducts ||
+    products.filter(p => p.stock > 0 && p.stock < 10);
+  const outOfStockProducts = realtimeMetrics?.outOfStockProducts ||
+    products.filter(p => p.stock === 0);
+  const totalValue = realtimeMetrics?.totalValue ||
+    products.reduce((sum, p) => sum + (p.price * (p.stock || 0)), 0);
 
   const filteredProducts = products.filter(product => {
-    if (filter === 'low') return product.countInStock > 0 && product.countInStock < 10;
-    if (filter === 'out') return product.countInStock === 0;
+    const stock = product.stock ?? 0;
+    if (filter === 'low') return stock > 0 && stock < 10;
+    if (filter === 'out') return stock === 0;
     return true;
   });
 
@@ -86,17 +95,17 @@ const AdminInventory = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="home-hero-heading text-2xl font-bold text-gray-900">Inventory Management</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Inventory Management</h2>
           <div className="flex items-center gap-3 mt-1">
-            <p className="text-gray-600">Real-time stock monitoring</p>
+            <p className="text-gray-600">Stock monitoring</p>
             <div className="flex items-center gap-2">
               <div className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full ${
-                isConnected ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                isConnected ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
               }`}>
                 <div className={`w-2 h-2 rounded-full ${
-                  isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'
+                  isConnected ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
                 }`}></div>
-                {isConnected ? 'Live' : 'Offline'}
+                {isConnected ? 'Live' : 'Polling'}
               </div>
               {lastUpdate && (
                 <span className="text-xs text-gray-500">
@@ -107,15 +116,14 @@ const AdminInventory = () => {
           </div>
         </div>
         <button
-          onClick={fetchInventory}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          onClick={handleRefresh}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors"
         >
           <FiRefreshCw className="w-4 h-4" />
           Refresh
         </button>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="p-6 transition-all hover:shadow-lg">
           <div className="flex items-center justify-between">
@@ -190,7 +198,6 @@ const AdminInventory = () => {
         </Card>
       </div>
 
-      {/* Filter Tabs */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <div className="flex space-x-4 border-b border-gray-200">
@@ -227,7 +234,6 @@ const AdminInventory = () => {
           </div>
         </div>
 
-        {/* Real-time Activity Feed */}
         <Card className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <FiActivity className="w-4 h-4 text-blue-600" />
@@ -241,7 +247,7 @@ const AdminInventory = () => {
               recentActivity.map((activity, index) => (
                 <div key={activity.id || index} className="text-xs border-l-2 border-blue-200 pl-2 py-1">
                   <p className="font-medium text-gray-800">{activity.customer}</p>
-                  <p className="text-gray-600">{activity.items} items · R{activity.total.toFixed(2)}</p>
+                  <p className="text-gray-600">{activity.items} items · R{activity.total?.toFixed(2)}</p>
                   <p className="text-gray-400">{new Date(activity.createdAt).toLocaleTimeString()}</p>
                 </div>
               ))
@@ -252,7 +258,6 @@ const AdminInventory = () => {
         </Card>
       </div>
 
-      {/* Inventory Table */}
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -268,17 +273,18 @@ const AdminInventory = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredProducts.map((product) => {
-                const stockStatus = 
-                  product.countInStock === 0 ? 'out' :
-                  product.countInStock < 10 ? 'low' : 'good';
+                const stock = product.stock ?? 0;
+                const stockStatus =
+                  stock === 0 ? 'out' :
+                  stock < 10 ? 'low' : 'good';
 
                 return (
                   <tr key={product._id} className="hover:bg-gray-50 transition-colors">
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden">
-                          {product.image ? (
-                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                        <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                          {product.images?.[0] ? (
+                            <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <FiPackage className="w-6 h-6 text-gray-400" />
@@ -297,7 +303,7 @@ const AdminInventory = () => {
                       </code>
                     </td>
                     <td className="py-4 px-6 font-semibold text-gray-900">
-                      R{product.price.toFixed(2)}
+                      R{product.price?.toFixed(2) ?? '0.00'}
                     </td>
                     <td className="py-4 px-6">
                       <span className={`font-semibold ${
@@ -305,11 +311,11 @@ const AdminInventory = () => {
                         stockStatus === 'low' ? 'text-yellow-600' :
                         'text-green-600'
                       }`}>
-                        {product.countInStock}
+                        {stock}
                       </span>
                     </td>
                     <td className="py-4 px-6 font-semibold text-gray-900">
-                      R{(product.price * product.countInStock).toFixed(2)}
+                      R{(product.price * stock).toFixed(2)}
                     </td>
                     <td className="py-4 px-6">
                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
